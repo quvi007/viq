@@ -61,7 +61,26 @@ static int currToken;
 static int getNextToken();
 
 unique_ptr<ExprAST> logError(const char *str);
-
 unique_ptr<PrototypeAST> logErrorP(const char *str);
 
+static unique_ptr<ExprAST> parseNumberExpr();
+static unique_ptr<ExprAST> parseParenExpr();
+static unique_ptr<ExprAST> parseIdentifierExpr();
+static unique_ptr<ExprAST> parsePrimary();
+static unique_ptr<ExprAST> parseBinOpRHS();
+
+static map<char, int> binopPrecedence;
+static int getTokenPrecedence();
+
+static unique_ptr<ExprAST> parseExpression();
+static unique_ptr<PrototypeAST> parsePrototype();
+static unique_ptr<FunctionAST> parseFunctionDefinition();
+static unique_ptr<PrototypeAST> parseExtern();
+static unique_ptr<FunctionAST> parseTopLevelExpr();
+
+static void handleDefinition();
+static void handleExtern();
+static void handleTopLevelExpression();
+
+static void mainLoop();
 #endif

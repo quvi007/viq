@@ -42,3 +42,81 @@ unique_ptr<PrototypeAST> logErrorP(const char *str) {
     logError(str);
     return nullptr;
 }
+
+static unique_ptr<ExprAST> parseNumberExpr() {
+
+}
+
+static unique_ptr<ExprAST> parseParenExpr() {
+
+}
+
+static unique_ptr<ExprAST> parseIdentifierExpr() {
+
+}
+
+static unique_ptr<ExprAST> parsePrimary() {
+
+}
+
+static unique_ptr<ExprAST> parseBinOpRHS() {
+
+}
+
+static int getTokenPrecedence() {
+
+}
+
+static unique_ptr<ExprAST> parseExpression() {
+
+}
+
+static unique_ptr<PrototypeAST> parsePrototype() {
+
+}
+
+static unique_ptr<FunctionAST> parseFunctionDefinition() {
+
+}
+
+static unique_ptr<PrototypeAST> parseExtern() {
+
+}
+
+static unique_ptr<FunctionAST> parseTopLevelExpr() {
+
+}
+
+static void handleDefinition() {
+
+}
+
+static void handleExtern() {
+
+}
+
+static void handleTopLevelExpression() {
+
+}
+
+static void mainLoop() {
+    while (true) {
+        fprintf(stderr, "ready> ");
+        switch (currToken) {
+            case tok_eof:
+                return;
+            case ';':
+                getNextToken();
+                break;
+            case tok_def:
+                handleDefinition();
+                break;
+            case tok_extern:
+                handleExtern();
+                break;
+            default:
+                handleTopLevelExpression();
+                break;
+        }
+    }
+}
