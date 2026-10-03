@@ -51,11 +51,17 @@ public:
 };
 
 class FunctionAST {
-    unique_ptr<PrototypeAST> protoype;
+    unique_ptr<PrototypeAST> prototype;
     unique_ptr<ExprAST> body;
 public:
     FunctionAST(unique_ptr<PrototypeAST> prototype, unique_ptr<ExprAST> body);
 };
 
+static int currToken;
+static int getNextToken();
+
+unique_ptr<ExprAST> logError(const char *str);
+
+unique_ptr<PrototypeAST> logErrorP(const char *str);
 
 #endif
