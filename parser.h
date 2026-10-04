@@ -34,12 +34,14 @@ class NumberExprAST : public ExprAST {
     double val;
 public:
     NumberExprAST(double val);
+    Value *codegen() override;
 };
 
 class VariableExprAST : public ExprAST {
     string name;
 public:
     VariableExprAST(const string &name);
+    Value *codegen() override;
 };
 
 class BinaryExprAST : public ExprAST {
@@ -47,6 +49,7 @@ class BinaryExprAST : public ExprAST {
     unique_ptr<ExprAST> LHS, RHS;
 public:
     BinaryExprAST(char op, unique_ptr<ExprAST> LHS, unique_ptr<ExprAST> RHS);
+    Value *codegen() override;
 };
 
 class CallExprAST : public ExprAST {
@@ -54,6 +57,7 @@ class CallExprAST : public ExprAST {
     vector<unique_ptr<ExprAST>> args;
 public:
     CallExprAST(const string &callee, vector<unique_ptr<ExprAST>> args);
+    Value *codegen() override;
 };
 
 class PrototypeAST {
@@ -62,6 +66,7 @@ class PrototypeAST {
 public:
     PrototypeAST(const string &name, vector<string> args);
     const string &getName() const;
+    Function *codegen();
 };
 
 class FunctionAST {
@@ -69,10 +74,11 @@ class FunctionAST {
     unique_ptr<ExprAST> body;
 public:
     FunctionAST(unique_ptr<PrototypeAST> prototype, unique_ptr<ExprAST> body);
+    Function *codegen();
 };
 
 NumberExprAST::NumberExprAST(double val) : val{val} {
-
+    
 }
 
 VariableExprAST::VariableExprAST(const string &name) : name{name} {
@@ -242,52 +248,6 @@ static unique_ptr<FunctionAST> parseTopLevelExpr() {
     if (!expr) return nullptr;
     auto prototype = make_unique<PrototypeAST>("__anon_expr", vector<string>());
     return make_unique<FunctionAST>(move(prototype), move(expr));
-}
-
-static void handleDefinition() {
-    if (parseFunctionDefinition()) {
-        fprintf(stderr, "Parsed a function definition.\n");
-    } else {
-        getNextToken();
-    }
-}
-
-static void handleExtern() {
-    if (parseExtern()) {
-        fprintf(stderr, "Parsed an extern.\n");
-    } else {
-        getNextToken();
-    }
-}
-
-static void handleTopLevelExpression() {
-    if (parseTopLevelExpr()) {
-        fprintf(stderr, "Parsed a top-level expr\n");
-    } else {
-        getNextToken();
-    }
-}
-
-static void mainLoop() {
-    while (true) {
-        fprintf(stderr, "ready> ");
-        switch (currToken) {
-            case tok_eof:
-                return;
-            case ';':
-                getNextToken();
-                break;
-            case tok_def:
-                handleDefinition();
-                break;
-            case tok_extern:
-                handleExtern();
-                break;
-            default:
-                handleTopLevelExpression();
-                break;
-        }
-    }
 }
 
 #endif

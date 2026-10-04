@@ -1,8 +1,5 @@
 #include <bits/stdc++.h>
-#include "lexer.h"
-#include "parser.h"
-
-using namespace std;
+#include "codegen.h"
 
 int main(int argc, char *argv[]) {
     binopPrecedence['<'] = 10;
@@ -12,6 +9,8 @@ int main(int argc, char *argv[]) {
 
     fprintf(stderr, "ready> ");
     getNextToken();
+    InitializeModule();
     mainLoop();
+    TheModule->print(errs(), nullptr);
     return 0;
 }
