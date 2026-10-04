@@ -1,2 +1,2 @@
-g++ -o main main.cpp lexer.cpp
+g++ -o main main.cpp
 ./main
